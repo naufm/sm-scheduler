@@ -1,13 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Show</title>
 </head>
+
 <body>
-    <img src="<%= post.imageURL %>" alt="" width="500">
-    <h2>Date Updated: <%= post.updatedAt %></h2>
+    <img src="<%= post.imageURL %>" alt="" style="object-fit:contain;width:400px;height:400px;">
+
+    <% if (post.publishAt.getTime() > Date.now() ) {%>
+        <h2>Publish Status: Pending...</h2>
+    <% } else { %>
+        <h2>Publish Status: Published!</h2>
+    <% } %>
+        <h2>Published Time: <%= post.publishAt %></h2>
+        <h2>Last Updated: <%= post.updatedAt %></h2>
+        <h2>Caption: <%= post.caption %></h2>
+
+
+    <form action="/myposts/<%= post._id %>?_method=DELETE" method="POST">
+        <button>Delete</button>
+    </form>
+    
 </body>
+
+<footer>
+    <a href="/myposts/<%= post._id %>/edit">Edit Post</a>
+    <a href="/myposts">My Posts</a>
+</footer>
+
 </html>

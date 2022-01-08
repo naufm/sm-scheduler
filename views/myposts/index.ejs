@@ -8,18 +8,22 @@
     <title>My Posts</title>
 </head>
 
+<header>
+    <a href="/myposts/new">New Post</a>
+</header>
+
 <body>
     <h1>All Posts</h1>
     <ul>
         <% for (let post of posts) {%>
             <li>
                 <a href="/myposts/<%= post._id %>">
-                    <img src="<%= post.imageURL %>" alt="" width="500">
+                    <img src="<%= post.imageURL %>" alt="" style="object-fit:contain;width:400px;height:400px;">
                 </a>
             </li>
         <% } %>
     </ul>
-    <a href="/myposts/new">New Post</a>
+    
 </body>
 
 </html>

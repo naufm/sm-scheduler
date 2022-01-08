@@ -11,14 +11,20 @@
 <body>
     <form action="/myposts" method="POST">
         <div>
-            <label for="publishDate">Publish Date</label>
-            <input type="date" name="post[publishDate]" id="publishDate">
+            <label for="publishAt">Publish Time</label>
+            <input type="datetime-local" name="post[publishAt]" id="post[publishAt]">
         </div>
         <div>
-            <label for="image">Image</label>
-            <input type="text" name="post[image]" id="image">
+            <label for="media">Image or Video URL</label>
+            <input type="text" name="post[imageURL]" id="post[imageURL]">
         </div>
+        <div>
+            <label for="caption">Caption</label>
+            <input type="text" name="post[caption]" id="post[caption]">
+        </div>
+        <button>Schedule Post</button>
     </form>
+    <a href="/myposts">My Posts</a>
 </body>
 
 </html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Post</title>
+</head>
+
+<body>
+    <h1>Edit Post</h1>
+    <form action="/myposts/<%= post._id %>?_method=PUT" method="POST">
+        <div>
+            <p>Current Publish Time: <%= post.publishAt.toString().slice(0,21) %></p>
+            <label for="publishAt">New Publish Time</label>
+            <input type="datetime-local" name="post[publishAt]" id="post[publishAt]" value="<%= post.publishAt.toISOString().slice(0,21) %>">
+        </div>
+        <div>
+            <label for="media">Image or Video URL</label>
+            <input type="text" name="post[imageURL]" id="post[imageURL]" value="<%= post.imageURL %>">
+        </div>
+        <div>
+            <label for="caption">Caption</label>
+            <input type="text" name="post[caption]" id="post[caption]" value="<%= post.caption %>">
+        </div>
+        <button>Update Post</button>
+        <a href="/myposts/<%= post._id %>">Back</a>
+</body>
+
+</html>
