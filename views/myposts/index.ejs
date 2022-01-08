@@ -1,29 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
+<% layout('layouts/boilerplate') %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Posts</title>
-</head>
+    <h1>My Posts</h1>
+    <div><a href="/myposts/new">New Post</a></div>
 
-<header>
-    <a href="/myposts/new">New Post</a>
-</header>
 
-<body>
-    <h1>All Posts</h1>
-    <ul>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
         <% for (let post of posts) {%>
-            <li>
-                <a href="/myposts/<%= post._id %>">
-                    <img src="<%= post.imageURL %>" alt="" style="object-fit:contain;width:400px;height:400px;">
-                </a>
-            </li>
+            <div class="col">
+                <div class="card ratio ratio-1x1">
+                    <a href="/myposts/<%= post._id %>">
+                        <img src="<%= post.imageURL %>" alt="" class="card-img-top img-fluid">
+                    </a>
+                </div>
+            </div>
         <% } %>
-    </ul>
-    
-</body>
-
-</html>
+    </div>

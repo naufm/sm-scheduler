@@ -2,11 +2,12 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
+const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
-const igPost = require('./models/igSchema.js')
-const morgan = require('morgan')
+const igPost = require('./models/igSchema.js');
+const morgan = require('morgan');
 
-
+app.engine('ejs', ejsMate);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 

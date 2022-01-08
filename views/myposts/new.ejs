@@ -1,14 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+<% layout('layouts/boilerplate') %> 
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Post</title>
-</head>
-
-<body>
     <form action="/myposts" method="POST">
         <div>
             <label for="publishAt">Publish Time</label>
@@ -25,6 +16,3 @@
         <button>Schedule Post</button>
     </form>
     <a href="/myposts">My Posts</a>
-</body>
-
-</html>
