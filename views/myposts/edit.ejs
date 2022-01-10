@@ -1,19 +1,33 @@
-<% layout('layouts/boilerplate') %> 
+<% layout('layouts/boilerplate') %>
 
-    <h1>Edit Post</h1>
-    <form action="/myposts/<%= post._id %>?_method=PUT" method="POST">
-        <div>
-            <p>Current Publish Time: <%= post.publishAt.toString().slice(0,21) %></p>
-            <label for="publishAt">New Publish Time</label>
-            <input type="datetime-local" name="post[publishAt]" id="post[publishAt]" value="<%= post.publishAt.toISOString().slice(0,21) %>">
+    <div class="row">
+        <h1 class="text-center">Edit Post</h1>
+        <div class="col-6 offset-3">
+
+            <form action="/myposts/<%= post._id %>?_method=PUT" method="POST">
+                <div class="mb-3">
+                    <label for="media" class="form-label">Image or Video URL</label>
+                    <input type="text" name="post[imageURL]" id="post[imageURL]" class=" form-control"
+                        value="<%= post.imageURL %>">
+                </div>
+                <div class="mb-3">
+                    <label for="caption" class="form-label">Caption</label>
+                    <textarea name="post[caption]" id="post[caption]" class="form-control"
+                        rows="3"><%= post.caption %></textarea>
+                </div>
+                <div class="col-4 mb-3">
+                    <!-- <p>Current Publish Time: <%= post.publishAt.toString().slice(0,21) %></p> -->
+                    <label for="publishAt" class="form-label">Publish Time</label>
+                    <input type="datetime-local" name="post[publishAt]" id="post[publishAt]" class="form-control"
+                        value="<%= post.publishAt.toISOString().slice(0,21) %>">
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-primary">Update Post</button>
+                </div>
+
+            </form>
+
+            <a href="/myposts/<%= post._id %>">Back</a>
+
         </div>
-        <div>
-            <label for="media">Image or Video URL</label>
-            <input type="text" name="post[imageURL]" id="post[imageURL]" value="<%= post.imageURL %>">
-        </div>
-        <div>
-            <label for="caption">Caption</label>
-            <input type="text" name="post[caption]" id="post[caption]" value="<%= post.caption %>">
-        </div>
-        <button>Update Post</button>
-        <a href="/myposts/<%= post._id %>">Back</a>
+    </div>

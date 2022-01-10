@@ -5,12 +5,12 @@
 
 
 
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row row-cols-md-3 g-4">
         <% for (let post of posts) {%>
             <div class="col">
-                <div class="card ratio ratio-1x1">
+                <div class="card ratio ratio-1x1 text-center">
                     <a href="/myposts/<%= post._id %>">
-                        <img src="<%= post.imageURL %>" alt="" class="card-img-top img-fluid">
+                        <img src="<%= post.imageURL %>" alt="" class="img-fluid p-1" style="height:100%;object-fit:contain;">
                     </a>
                 </div>
             </div>

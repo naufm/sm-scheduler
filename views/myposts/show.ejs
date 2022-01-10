@@ -1,22 +1,29 @@
 <% layout('layouts/boilerplate') %> 
 
-    <img src="<%= post.imageURL %>" alt="" style="object-fit:contain;width:400px;height:400px;">
-
-    <% if (post.publishAt.getTime() > Date.now() ) {%>
-        <h2>Publish Status: Pending...</h2>
-    <% } else { %>
-        <h2>Publish Status: Published!</h2>
-    <% } %>
-        <h2>Published Time: <%= post.publishAt %></h2>
-        <h2>Last Updated: <%= post.updatedAt %></h2>
-        <h2>Caption: <%= post.caption %></h2>
-
-
-    <form action="/myposts/<%= post._id %>?_method=DELETE" method="POST">
-        <button>Delete</button>
-    </form>
-    
-<footer>
-    <a href="/myposts/<%= post._id %>/edit">Edit Post</a>
-    <a href="/myposts">My Posts</a>
-</footer>
+<div class="row">
+    <div class="col-4 offset-4">
+        <div class="card border-1">
+            <img src="<%= post.imageURL %>" class="card-img-top p-1" alt="" style="height:400px;width:100%;object-fit:contain;">
+            <div class="card-body">
+              <p class="card-text"><%= post.caption %></p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item text-muted">
+                <% if (post.publishAt.getTime() > Date.now() ) {%>
+                    Publish Status: Pending...
+                <% } else { %>
+                    Publish Status: Published!
+                <% } %>
+              </li>
+              <li class="list-group-item text-muted">Publish Time: <%= post.publishAt %></li>
+              <li class="list-group-item text-muted">Last Updated: <%= post.updatedAt %></li>
+            </ul>
+            <div class="card-body">
+              <a href="/myposts/<%= post._id %>/edit" class="card-link btn btn-info">Edit Post</a>
+              <form class="d-inline" action="/myposts/<%= post._id %>?_method=DELETE" method="POST">
+                <button class="btn btn-danger">Delete</button>
+            </form>
+            </div>
+          </div>
+    </div>
+</div>

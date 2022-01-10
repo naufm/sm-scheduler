@@ -1,18 +1,28 @@
-<% layout('layouts/boilerplate') %> 
+<% layout('layouts/boilerplate') %>
 
-    <form action="/myposts" method="POST">
-        <div>
-            <label for="publishAt">Publish Time</label>
-            <input type="datetime-local" name="post[publishAt]" id="post[publishAt]">
+    <div class="row">
+        <h1 class="text-center">New Post</h1>
+        <div class="col-6 offset-3">
+
+            <form action="/myposts" method="POST">
+                <div class="mb-3">
+                    <label for="media" class="form-label">Image or Video URL</label>
+                    <input type="text" name="post[imageURL]" id="post[imageURL]" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="caption" class="form-label">Caption</label>
+                    <textarea name="post[caption]" id="post[caption]" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="col-4 mb-3">
+                    <label for="publishAt" class="form-label">Publish Time</label>
+                    <input type="datetime-local" name="post[publishAt]" id="post[publishAt]" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-primary">Schedule Post</button>
+                </div>
+            </form>
+
+            <a href="/myposts">My Posts</a>
+
         </div>
-        <div>
-            <label for="media">Image or Video URL</label>
-            <input type="text" name="post[imageURL]" id="post[imageURL]">
-        </div>
-        <div>
-            <label for="caption">Caption</label>
-            <input type="text" name="post[caption]" id="post[caption]">
-        </div>
-        <button>Schedule Post</button>
-    </form>
-    <a href="/myposts">My Posts</a>
+    </div>
