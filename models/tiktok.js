@@ -9,6 +9,10 @@ const tiktokSchema = new Schema({
     imageURL: {
         type: String,
         required: true
+    },
+    caption: {
+        type: String,
+        required: true
     }
 },
     { timestamps: true }
