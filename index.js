@@ -8,9 +8,25 @@ const methodOverride = require('method-override');
 const morgan = require('morgan');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user')
 
-const instagram = require('./routes/instagramRoutes')
-const tiktok = require('./routes/tiktokRoutes')
+// Require page routes
+const userRoutes = require('./routes/userRoutes')
+const instagramRoutes = require('./routes/instagramRoutes')
+const tiktokRoutes = require('./routes/tiktokRoutes')
+
+
+mongoose.connect('mongodb://localhost:27017/sm-scheduler', { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+        console.log("Database Connected")
+    })
+    .catch(err => {
+        console.log("Database Connection Error")
+        console.log(err)
+    })
+
 
 app.engine('ejs', ejsMate);
 app.set('views', path.join(__dirname, 'views'));
@@ -34,24 +50,25 @@ const sessionConfig = {
 }
 app.use(session(sessionConfig));
 
-
-mongoose.connect('mongodb://localhost:27017/sm-scheduler', { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        console.log("Database Connected")
-    })
-    .catch(err => {
-        console.log("Database Connection Error")
-        console.log(err)
-    })
+// Authentication using Passport
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+// How to store and remove user in the session
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
 })
 
-app.use('/instagram', instagram);
-app.use('/tiktok', tiktok);
+// Use the external page routes
+app.use('/', userRoutes);
+app.use('/instagram', instagramRoutes);
+app.use('/tiktok', tiktokRoutes);
 
 app.get('/', (req, res) => {
     res.render('home')

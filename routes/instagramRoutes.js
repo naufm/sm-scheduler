@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const {smSchema} = require('../joiSchemas')
+const { smSchema } = require('../joiSchemas')
 const catchAsync = require('../utilities/catchAsync')
 const ExpressError = require('../utilities/ExpressError')
 const igPost = require('../models/instagram');
+const { isLoggedIn } = require('../middleware')
 
 
 const validatePosts = (req, res, next) => {
@@ -23,11 +24,11 @@ router.get('/', catchAsync(async (req, res) => {
 }));
 
 // CREATE NEW OBJECT
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
     res.render('instagram/new');
 });
 
-router.post('/', validatePosts, catchAsync(async (req, res, next) => {
+router.post('/', isLoggedIn, validatePosts, catchAsync(async (req, res, next) => {
     const newPost = new igPost(req.body.post);
     await newPost.save();
     req.flash('success', 'Your post has been scheduled.')
@@ -35,10 +36,10 @@ router.post('/', validatePosts, catchAsync(async (req, res, next) => {
 }));
 
 // SHOW OBJECT DETAILS
-router.get('/:id', catchAsync(async (req, res) => {
+router.get('/:id', isLoggedIn, catchAsync(async (req, res) => {
     const { id } = req.params;
     const post = await igPost.findById(id);
-    if(!post) {
+    if (!post) {
         req.flash('error', 'That post does not exist!');
         return res.redirect('/instagram');
     }
@@ -49,7 +50,7 @@ router.get('/:id', catchAsync(async (req, res) => {
 router.get('/:id/edit', catchAsync(async (req, res) => {
     const { id } = req.params;
     const post = await igPost.findById(id);
-    if(!post) {
+    if (!post) {
         req.flash('error', 'That post does not exist!');
         return res.redirect('/instagram');
     }
