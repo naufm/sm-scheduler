@@ -24,7 +24,11 @@ const InstagramSchema = new Schema({
             type: Number,
             default: 0
         }
-    }]
+    }],
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 },
     { timestamps: true }
 );
