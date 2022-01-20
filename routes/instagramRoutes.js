@@ -1,25 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { smSchema } = require('../joiSchemas')
-const catchAsync = require('../utilities/catchAsync')
-const ExpressError = require('../utilities/ExpressError')
+const catchAsync = require('../utilities/catchAsync');
 const igPost = require('../models/instagram');
-const { isLoggedIn } = require('../middleware')
+const { isLoggedIn, validatePosts, isAuthor } = require('../middleware');
 
 
-const validatePosts = (req, res, next) => {
-    const { error } = smSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400);
-    } else {
-        next();
-    }
-}
-
-
-router.get('/', catchAsync(async (req, res) => {
-    const posts = await igPost.find({});
+router.get('/', isLoggedIn, catchAsync(async (req, res) => {
+    const posts = await igPost.find({author: req.user._id});
     res.render('instagram/index', { posts });
 }));
 
@@ -30,13 +17,14 @@ router.get('/new', isLoggedIn, (req, res) => {
 
 router.post('/', isLoggedIn, validatePosts, catchAsync(async (req, res, next) => {
     const newPost = new igPost(req.body.post);
+    newPost.author = req.user._id;
     await newPost.save();
     req.flash('success', 'Your post has been scheduled.')
     res.redirect(`instagram/${newPost._id}`)
 }));
 
 // SHOW OBJECT DETAILS
-router.get('/:id', isLoggedIn, catchAsync(async (req, res) => {
+router.get('/:id', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
     const { id } = req.params;
     const post = await igPost.findById(id);
     if (!post) {
@@ -47,7 +35,7 @@ router.get('/:id', isLoggedIn, catchAsync(async (req, res) => {
 }));
 
 // EDIT OBJECTS
-router.get('/:id/edit', catchAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
     const { id } = req.params;
     const post = await igPost.findById(id);
     if (!post) {
@@ -58,7 +46,7 @@ router.get('/:id/edit', catchAsync(async (req, res) => {
 }));
 
 // PUT replaces the object with a new object. PATCH updates parts of the object.
-router.put('/:id', validatePosts, catchAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, isAuthor, validatePosts, catchAsync(async (req, res) => {
     const { id } = req.params;
     const post = await igPost.findByIdAndUpdate(id, { ...req.body.post }, { runValidators: true, new: true });
     req.flash('success', 'Your post has been updated.')
@@ -66,7 +54,7 @@ router.put('/:id', validatePosts, catchAsync(async (req, res) => {
 }));
 
 // DELETE OBJECTS
-router.delete('/:id', catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
     const { id } = req.params;
     await igPost.findByIdAndDelete(id);
     req.flash('success', 'Your post has been deleted.')
