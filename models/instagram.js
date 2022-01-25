@@ -6,9 +6,9 @@ const InstagramSchema = new Schema({
         type: Date,
         required: true
     },
-    imageURL: {
-        type: String,
-        required: true
+    media: {
+        path: String,
+        filename: String
     },
     caption: {
         type: String,
