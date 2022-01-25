@@ -1,3 +1,8 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
+
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -5,7 +10,7 @@ const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const ExpressError = require('./utilities/ExpressError')
 const methodOverride = require('method-override');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
@@ -34,7 +39,7 @@ app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'));
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 
