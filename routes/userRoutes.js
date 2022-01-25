@@ -1,46 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utilities/catchAsync')
-const User = require('../models/user');
+const users = require('../controllers/usersCtrl');
 const passport = require('passport');
 
-router.get('/register', (req, res) => {
-    res.render('users/register')
-})
+// User Registration
+router.route('/register')
+    .get(users.registerForm)
+    .post(catchAsync(users.register));
 
-router.post('/register', catchAsync(async (req, res) => {
-    try {
-        const { email, username, password } = req.body;
-        const user = new User({ email, username });
-        const registeredUser = await User.register(user, password);
-        req.login(registeredUser, err => {
-            if (err) return next(err);
-            req.flash('success', 'Welcome to SM Scheduler!');
-            return res.redirect('/instagram');
-        })
-    } catch (e) {
-        req.flash('error', e.message);
-        res.redirect('register');
-    }
+// User Login
+router.route('/login')
+    .get(users.loginForm)
+    .post(passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), users.login);
 
-}));
-
-router.get('/login', (req, res) => {
-    res.render('users/login');
-})
-
-router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
-    req.flash('success', 'Welcome back!');
-    const redirectUrl = req.session.returnTo || '/instagram'
-    delete req.session.returnTo; 
-    res.redirect(redirectUrl);
-})
-
-router.get('/logout', (req, res) => {
-    req.logout();
-    req.flash('success', 'You have been logged out');
-    res.redirect('/');
-})
+// User Logout
+router.get('/logout', users.logout);
 
 
 module.exports = router;
