@@ -4,19 +4,18 @@
         <h1 class="text-center">New Post</h1>
         <div class="col-6 offset-3">
 
-            <form action="/instagram" method="POST" novalidate class="validate-form">
+            <form action="/instagram" method="POST" novalidate class="validate-form" enctype="multipart/form-data">
                 <div class="mb-3">
-                    <label for="media" class="form-label">Image or Video URL</label>
-                    <input type="text" name="post[imageURL]" id="post[imageURL]" class="form-control" required>
-                    <div class="valid-feedback"></div>
+                    <label for="media" class="form-label">Upload an Image or Video</label>
+                    <input type="file" name="media" id="media" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label for="caption" class="form-label">Caption</label>
-                    <textarea name="post[caption]" id="post[caption]" class="form-control" rows="3" required></textarea>
+                    <textarea name="post[caption]" id="caption" class="form-control" rows="3" required></textarea>
                 </div>
-                <div class="col-4 mb-3">
+                <div class="col-5 mb-3">
                     <label for="publishAt" class="form-label">Publish Time</label>
-                    <input type="datetime-local" name="post[publishAt]" id="post[publishAt]" class="form-control" required>
+                    <input type="datetime-local" name="post[publishAt]" id="publishAt" class="form-control" required>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-primary">Schedule Post</button>
@@ -27,4 +26,3 @@
 
         </div>
     </div>
-

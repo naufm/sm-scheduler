@@ -4,21 +4,32 @@
         <h1 class="text-center">Edit Post</h1>
         <div class="col-6 offset-3">
 
-            <form action="/instagram/<%= post._id %>?_method=PUT" method="POST" novalidate class="validate-form">
+            <div class="mb-3">
+                Current Image or Video
+                <% if(post.media.path.slice(-3)==='mp4' ) {%>
+                    <video src="<%= post.media.path %>" class="card-img-top p-1" controls type="video/mp4" alt=""
+                        style="height:400px;width:100%;object-fit:contain;"">Sorry, your browser doesn't support embedded videos.</video>
+                  <% } else { %> 
+                    <img src=" <%=post.media.path %>" class="card-img-top p-1" alt=""
+                        style="height:400px;width:100%;object-fit:contain;">
+                        <% } %>
+            </div>
+
+            <form action="/instagram/<%= post._id %>?_method=PUT" method="POST" novalidate class="validate-form" enctype="multipart/form-data">
                 <div class="mb-3">
-                    <label for="media" class="form-label">Image or Video URL</label>
-                    <input type="text" name="post[imageURL]" id="post[imageURL]" class="form-control"
-                        value="<%= post.imageURL %>" required>
+                    <label for="media" class="form-label">Upload New Image or Video</label>
+                    <input type="file" name="media" id="media" class="form-control" value="<%= post.media.path %>"
+                        required>
                 </div>
                 <div class="mb-3">
                     <label for="caption" class="form-label">Caption</label>
-                    <textarea name="post[caption]" id="post[caption]" class="form-control"
-                        rows="3" required><%= post.caption %></textarea>
+                    <textarea name="post[caption]" id="caption" class="form-control" rows="3"
+                        required><%= post.caption %></textarea>
                 </div>
-                <div class="col-4 mb-3">
+                <div class="col-5 mb-3">
                     <!-- <p>Current Publish Time: <%= post.publishAt.toString().slice(0,21) %></p> -->
                     <label for="publishAt" class="form-label">Publish Time</label>
-                    <input type="datetime-local" name="post[publishAt]" id="post[publishAt]" class="form-control"
+                    <input type="datetime-local" name="post[publishAt]" id="publishAt" class="form-control"
                         value="<%= post.publishAt.toISOString().slice(0,21) %>" required>
                 </div>
                 <div class="mb-3">

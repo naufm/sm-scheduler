@@ -10,9 +10,15 @@
             <div class="col">
                 <div class="card ratio ratio-1x1 text-center">
                     <a href="/instagram/<%= post._id %>">
-                        <img src="<%= post.imageURL %>" alt="" class="img-fluid p-1" style="height:100%;object-fit:contain;">
+                        <% if(post.media.path.slice(-3) === 'mp4' ) {%>
+                            <video src="<%= post.media.path %>" class="img-fluid p-1" controls type="video/mp4"
+                                alt="" style="height:400px;width:100%;object-fit:contain;"">Sorry, your browser doesn't support embedded videos.</video>
+                        <% } else { %> 
+                            <img src=" <%=post.media.path %>" alt="" class="img-fluid p-1"
+                                style="height:100%;object-fit:contain;">
+                        <% } %>
                     </a>
                 </div>
             </div>
-        <% } %>
+            <% } %>
     </div>
