@@ -12,7 +12,7 @@ module.exports.register = async (req, res) => {
         req.login(registeredUser, err => {
             if (err) return next(err);
             req.flash('success', 'Welcome to SM Scheduler!');
-            return res.redirect('/instagram');
+            return res.redirect('/dashboard');
         })
     } catch (e) {
         req.flash('error', e.message);
@@ -27,7 +27,7 @@ module.exports.loginForm = (req, res) => {
 
 module.exports.login = (req, res) => {
     req.flash('success', 'Welcome back!');
-    const redirectUrl = req.session.returnTo || '/instagram'
+    const redirectUrl = req.session.returnTo || '/dashboard'
     delete req.session.returnTo; 
     res.redirect(redirectUrl);
 }
