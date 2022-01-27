@@ -1,15 +1,21 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const MediaSchema = new Schema({
+    path: String,
+    filename: String
+});
+
+MediaSchema.virtual('thumbnail').get(function(){
+    return this.path.replace('/upload', '/upload/w_400,h_400,c_fit');
+})
+
 const InstagramSchema = new Schema({
     publishAt: {
         type: Date,
         required: true
     },
-    media: {
-        path: String,
-        filename: String
-    },
+    media: MediaSchema,
     caption: {
         type: String,
         required: true
