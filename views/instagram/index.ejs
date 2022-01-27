@@ -4,21 +4,22 @@
     <div><a href="/instagram/new">New Post</a></div>
 
 
-
-    <div class="row row-cols-md-3 g-4">
-        <% for (let post of posts) {%>
-            <div class="col">
-                <div class="card ratio ratio-1x1 text-center">
-                    <a href="/instagram/<%= post._id %>">
-                        <% if(post.media.path.slice(-3) === 'mp4' ) {%>
-                            <video src="<%= post.media.path %>" class="img-fluid p-1" controls type="video/mp4"
-                                alt="" style="height:400px;width:100%;object-fit:contain;"">Sorry, your browser doesn't support embedded videos.</video>
-                        <% } else { %> 
-                            <img src=" <%=post.media.path %>" alt="" class="img-fluid p-1"
-                                style="height:100%;object-fit:contain;">
-                        <% } %>
-                    </a>
+    <div class="container">
+        <div class="row">
+            <% for (let post of posts) {%>
+                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                    <div class="card ratio ratio-1x1 text-center">
+                        <a href="/instagram/<%= post._id %>">
+                            <% if(post.media.path.slice(-3)==='mp4' ) {%>
+                                <video src="<%= post.media.thumbnail %>" class="img-fluid p-1" controls type="video/mp4"
+                                    alt="" style="height:100%;object-fit:contain;"">Sorry, your browser doesn't support embedded videos.</video>
+                            <% } else { %> 
+                                <img src=" <%=post.media.thumbnail %>" alt="" class="img-fluid p-1"
+                                    style="height:100%;object-fit:contain;">
+                            <% } %>
+                        </a>
+                    </div>
                 </div>
-            </div>
             <% } %>
+        </div>
     </div>
