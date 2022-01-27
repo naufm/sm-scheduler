@@ -1,13 +1,15 @@
 <% layout('layouts/boilerplate') %> 
 
 <div class="row">
-    <div class="col-4 offset-4">
-        <div class="card border-1">
+    <div class="col-lg-4 offset-lg-4">
+        <div class="card shadow">
+          <div class="ratio ratio-1x1 text-center">
             <% if(post.media.path.slice(-3) === 'mp4') {%>
-              <video src="<%= post.media.path %>" class="card-img-top p-1" controls type="video/mp4" alt="" style="height:400px;width:100%;object-fit:contain;"">Sorry, your browser doesn't support embedded videos.</video>
+              <video src="<%= post.media.path %>" class="card-img-top p-1" controls type="video/mp4" alt="" style="height:100%;object-fit:contain;"">Sorry, your browser doesn't support embedded videos.</video>
             <% } else { %> 
-              <img src="<%= post.media.path %>" class="card-img-top p-1" alt="" style="height:400px;width:100%;object-fit:contain;">
+              <img src="<%= post.media.path %>" class="card-img-top p-1" alt="" style="height:100%;object-fit:contain;">
             <% } %> 
+          </div>
             <div class="card-body">
               <p class="card-text"><%= post.caption %></p>
             </div>

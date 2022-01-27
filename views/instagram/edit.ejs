@@ -8,10 +8,10 @@
                 Current Image or Video
                 <% if(post.media.path.slice(-3)==='mp4' ) {%>
                     <video src="<%= post.media.path %>" class="card-img-top p-1" controls type="video/mp4" alt=""
-                        style="height:400px;width:100%;object-fit:contain;"">Sorry, your browser doesn't support embedded videos.</video>
+                        style="height:300px;width:100%;object-fit:contain;"">Sorry, your browser doesn't support embedded videos.</video>
                   <% } else { %> 
-                    <img src=" <%=post.media.path %>" class="card-img-top p-1" alt=""
-                        style="height:400px;width:100%;object-fit:contain;">
+                    <img src=" <%= post.media.path %>" class="card-img-top p-1" alt=""
+                        style="height:300px;width:100%;object-fit:contain;">
                         <% } %>
             </div>
 
