@@ -17,6 +17,8 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user')
 
+const { isLoggedIn } = require('./middleware');
+
 // Require page routes
 const userRoutes = require('./routes/userRoutes')
 const instagramRoutes = require('./routes/instagramRoutes')
@@ -79,6 +81,10 @@ app.get('/', (req, res) => {
     res.render('home')
 });
 
+// Temp dashboard page
+app.get('/dashboard', isLoggedIn, (req, res) => {
+    res.render('dashboard')
+});
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404))
