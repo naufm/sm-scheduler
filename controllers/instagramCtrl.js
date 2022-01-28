@@ -42,8 +42,10 @@ module.exports.editPostForm = async (req, res) => {
 module.exports.updatePost = async (req, res) => {
     const { id } = req.params;
     const post = await igPost.findByIdAndUpdate(id, { ...req.body.post }, { runValidators: true, new: true });
-    await cloudinary.uploader.destroy(post.media.filename);
-    post.media = req.file;
+    if(req.file){
+        await cloudinary.uploader.destroy(post.media.filename);
+        post.media = req.file;
+    }
     await post.save();
     req.flash('success', 'Your post has been updated.')
     res.redirect(`/instagram/${post._id}`);
