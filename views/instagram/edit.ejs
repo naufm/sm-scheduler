@@ -18,8 +18,7 @@
             <form action="/instagram/<%= post._id %>?_method=PUT" method="POST" novalidate class="validate-form" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="media" class="form-label">Upload New Image or Video</label>
-                    <input type="file" name="media" id="media" class="form-control" value="<%= post.media.path %>"
-                        required>
+                    <input type="file" name="media" id="media" class="form-control" value="<%= post.media.path %>">
                 </div>
                 <div class="mb-3">
                     <label for="caption" class="form-label">Caption</label>

@@ -15,7 +15,6 @@ module.exports.createPost = async (req, res, next) => {
     newPost.media = req.file;
     newPost.author = req.user._id;
     await newPost.save();
-    console.log(newPost);
     req.flash('success', 'Your post has been scheduled.')
     res.redirect(`instagram/${newPost._id}`)
 }
