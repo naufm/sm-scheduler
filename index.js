@@ -26,8 +26,8 @@ const userRoutes = require('./routes/userRoutes')
 const instagramRoutes = require('./routes/instagramRoutes')
 const tiktokRoutes = require('./routes/tiktokRoutes')
 
-// const dbUrl = process.env.DB_URL;
-const dbUrl = 'mongodb://localhost:27017/sm-scheduler';
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/sm-scheduler';
+
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log("Database Connected")
@@ -152,6 +152,7 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render('error', { err });
 });
 
-app.listen(3000, () => {
-    console.log("Serving on Port 3000.");
+const port = process.env.PORT || 3000
+app.listen(port, () => {
+    console.log(`Serving on Port ${port}.`);
 });
