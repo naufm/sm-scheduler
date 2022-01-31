@@ -1,7 +1,8 @@
 const User = require('../models/user');
+const timezones = require('../utilities/timzones.json');
 
 module.exports.registerForm = (req, res) => {
-    res.render('users/register')
+    res.render('users/register', { timezones })
 }
 
 module.exports.register = async (req, res) => {

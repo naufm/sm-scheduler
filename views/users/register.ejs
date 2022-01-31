@@ -19,7 +19,15 @@
                                 <label class="form-label" for="password">Password</label>
                                 <input class="form-control" type="password" id="password" name="password" required>
                             </div>
-                            <input type="hidden" id="timezone" name="timezone" value="<%= new Date().getTimezoneOffset()*-1/60 %>">
+                            <div class="mb-3">
+                                <label class="form-label" for="timezone">Timezone</label>
+                                <select class="form-select" aria-label="Default select example" id="timezone" name="timezone">
+                                    <option selected>Select a Timezone</option>
+                                    <% for (let timezone of timezones) { %> 
+                                        <option value="<%= parseInt(timezone.utc) %>"><%= timezone.label %></option>
+                                    <% } %> 
+                                  </select>
+                            </div>
                             <div class="d-grid gap-2">
                                 <button class="btn btn-success">Register</button>
                             </div>
