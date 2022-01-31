@@ -8,7 +8,7 @@ const UserSchema = new Schema({
         required: true,
         unique: true
     },
-    timezone: Number
+    timezone: String
 });
 
 UserSchema.plugin(passportLocalMongoose);
