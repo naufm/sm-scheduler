@@ -5,7 +5,7 @@ const viewDate = (targetDate, zoneOffset) => {
     return new Date(targetDate.setHours(targetDate.getHours() + zoneOffset)).toISOString().slice(0, 16);
 };
 const amendDate = (targetDate, zoneOffset) => {
-    return new Date(targetDate.setHours(targetDate.getHours() - zoneOffset)).toISOString().slice(0, 16);
+    return new Date(targetDate.setHours(targetDate.getHours() - zoneOffset)).toISOString();
 };
 
 module.exports.index = async (req, res) => {
