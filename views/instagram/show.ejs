@@ -21,8 +21,8 @@
                     Publish Status: Published!
                 <% } %>
               </li>
-              <li class="list-group-item text-muted">Publish Time: <%= post.publishAt %></li>
-              <li class="list-group-item text-muted">Last Updated: <%= post.updatedAt %></li>
+              <li class="list-group-item text-muted">Publish Time: <%= postTime.replace("T", " | ") %></li>
+              <li class="list-group-item text-muted">Last Updated: <%= updatedTime.replace("T", " | ") %></li>
             </ul>
             <div class="card-body">
               <a href="/instagram/<%= post._id %>/edit" class="card-link btn btn-info">Edit Post</a>

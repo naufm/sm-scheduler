@@ -10,12 +10,13 @@
                     <video src="<%= post.media.path %>" class="card-img-top p-1" controls type="video/mp4" alt=""
                         style="height:300px;width:100%;object-fit:contain;"">Sorry, your browser doesn't support embedded videos.</video>
                   <% } else { %> 
-                    <img src=" <%= post.media.path %>" class="card-img-top p-1" alt=""
+                    <img src=" <%=post.media.path %>" class="card-img-top p-1" alt=""
                         style="height:300px;width:100%;object-fit:contain;">
                         <% } %>
             </div>
 
-            <form action="/instagram/<%= post._id %>?_method=PUT" method="POST" novalidate class="validate-form" enctype="multipart/form-data">
+            <form action="/instagram/<%= post._id %>?_method=PUT" method="POST" novalidate class="validate-form"
+                enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="media" class="form-label">Upload New Image or Video</label>
                     <input type="file" name="media" id="media" class="form-control" value="<%= post.media.path %>">
@@ -25,11 +26,10 @@
                     <textarea name="post[caption]" id="caption" class="form-control" rows="3"
                         required><%= post.caption %></textarea>
                 </div>
-                <div class="col-5 mb-3">
-                    <!-- <p>Current Publish Time: <%= post.publishAt.toString().slice(0,21) %></p> -->
+                <div class="col-6 mb-3">
                     <label for="publishAt" class="form-label">Publish Time</label>
                     <input type="datetime-local" name="post[publishAt]" id="publishAt" class="form-control"
-                        value="<%= post.publishAt.toISOString().slice(0,21) %>" required>
+                        value="<%= postTime %>" required>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-primary">Update Post</button>
