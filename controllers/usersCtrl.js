@@ -6,8 +6,8 @@ module.exports.registerForm = (req, res) => {
 
 module.exports.register = async (req, res) => {
     try {
-        const { email, username, password } = req.body;
-        const user = new User({ email, username });
+        const { email, username, password, timezone } = req.body;
+        const user = new User({ email, username, timezone });
         const registeredUser = await User.register(user, password);
         req.login(registeredUser, err => {
             if (err) return next(err);
@@ -25,10 +25,13 @@ module.exports.loginForm = (req, res) => {
     res.render('users/login');
 }
 
-module.exports.login = (req, res) => {
+module.exports.login = async (req, res) => {
+    const query = { username: req.body.username };
+    const userZone = await User.findOneAndUpdate(query, { timezone: req.body.timezone }, { runValidators: true, new: true });
+    await userZone.save();
     req.flash('success', 'Welcome back!');
     const redirectUrl = req.session.returnTo || '/dashboard'
-    delete req.session.returnTo; 
+    delete req.session.returnTo;
     res.redirect(redirectUrl);
 }
 
