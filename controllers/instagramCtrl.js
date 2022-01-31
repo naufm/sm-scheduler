@@ -1,8 +1,11 @@
 const igPost = require('../models/instagram');
 const { cloudinary } = require('../cloudinary');
 
-const formatDate = (targetDate, zoneOffset) => {
+const viewDate = (targetDate, zoneOffset) => {
     return new Date(targetDate.setHours(targetDate.getHours() + zoneOffset)).toISOString().slice(0, 16);
+};
+const amendDate = (targetDate, zoneOffset) => {
+    return new Date(targetDate.setHours(targetDate.getHours() - zoneOffset)).toISOString().slice(0, 16);
 };
 
 module.exports.index = async (req, res) => {
@@ -19,7 +22,7 @@ module.exports.createPost = async (req, res, next) => {
     newPost.media = req.file;
     newPost.author = req.user._id;
     const userZone = req.user.timezone;
-    newPost.publishAt = formatDate(newPost.publishAt, userZone);
+    newPost.publishAt = amendDate(newPost.publishAt, userZone);
     await newPost.save();
     req.flash('success', 'Your post has been scheduled.')
     res.redirect(`instagram/${newPost._id}`)
@@ -33,8 +36,8 @@ module.exports.showPost = async (req, res) => {
         return res.redirect('/instagram');
     }
     const userZone = req.user.timezone;
-    const postTime = formatDate(post.publishAt, userZone);
-    const updatedTime = formatDate(post.updatedAt, userZone);
+    const postTime = viewDate(post.publishAt, userZone);
+    const updatedTime = viewDate(post.updatedAt, userZone);
     res.render('instagram/show', { post, postTime, updatedTime });
 }
 
@@ -46,7 +49,7 @@ module.exports.editPostForm = async (req, res) => {
         return res.redirect('/instagram');
     };
     const userZone = req.user.timezone;
-    const postTime = formatDate(post.publishAt, userZone);
+    const postTime = viewDate(post.publishAt, userZone);
     res.render('instagram/edit', { post, postTime });
 }
 
@@ -60,7 +63,7 @@ module.exports.updatePost = async (req, res) => {
     };
     const userZone = req.user.timezone;
     if (currentPost.publishAt !== post.publishAt) {
-        post.publishAt = formatDate(post.publishAt, userZone);
+        post.publishAt = amendDate(post.publishAt, userZone);
     };
     await post.save();
     req.flash('success', 'Your post has been updated.')
