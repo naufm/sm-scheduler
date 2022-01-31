@@ -1,8 +1,12 @@
 const igPost = require('../models/instagram');
 const { cloudinary } = require('../cloudinary');
 
+const formatDate = (targetDate, zoneOffset) => {
+    return new Date(targetDate.setHours(targetDate.getHours() + zoneOffset)).toISOString().slice(0, 16);
+};
+
 module.exports.index = async (req, res) => {
-    const posts = await igPost.find({author: req.user._id});
+    const posts = await igPost.find({ author: req.user._id });
     res.render('instagram/index', { posts });
 }
 
@@ -14,6 +18,8 @@ module.exports.createPost = async (req, res, next) => {
     const newPost = new igPost(req.body.post);
     newPost.media = req.file;
     newPost.author = req.user._id;
+    const userZone = req.user.timezone;
+    newPost.publishAt = formatDate(newPost.publishAt, userZone);
     await newPost.save();
     req.flash('success', 'Your post has been scheduled.')
     res.redirect(`instagram/${newPost._id}`)
@@ -26,7 +32,10 @@ module.exports.showPost = async (req, res) => {
         req.flash('error', 'That post does not exist!');
         return res.redirect('/instagram');
     }
-    res.render('instagram/show', { post });
+    const userZone = req.user.timezone;
+    const postTime = formatDate(post.publishAt, userZone);
+    const updatedTime = formatDate(post.updatedAt, userZone);
+    res.render('instagram/show', { post, postTime, updatedTime });
 }
 
 module.exports.editPostForm = async (req, res) => {
@@ -35,17 +44,24 @@ module.exports.editPostForm = async (req, res) => {
     if (!post) {
         req.flash('error', 'That post does not exist!');
         return res.redirect('/instagram');
-    }
-    res.render('instagram/edit', { post });
+    };
+    const userZone = req.user.timezone;
+    const postTime = formatDate(post.publishAt, userZone);
+    res.render('instagram/edit', { post, postTime });
 }
 
 module.exports.updatePost = async (req, res) => {
     const { id } = req.params;
+    const currentPost = await igPost.findById(id);
     const post = await igPost.findByIdAndUpdate(id, { ...req.body.post }, { runValidators: true, new: true });
-    if(req.file){
+    if (req.file) {
         await cloudinary.uploader.destroy(post.media.filename);
         post.media = req.file;
-    }
+    };
+    const userZone = req.user.timezone;
+    if (currentPost.publishAt !== post.publishAt) {
+        post.publishAt = formatDate(post.publishAt, userZone);
+    };
     await post.save();
     req.flash('success', 'Your post has been updated.')
     res.redirect(`/instagram/${post._id}`);
