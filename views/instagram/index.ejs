@@ -1,4 +1,8 @@
 <% layout('layouts/boilerplate') %>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous"
+        src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0&appId=190092463316496&autoLogAppEvents=1"
+        nonce="GOZtzuet"></script>
 
     <h1>Instagram Posts</h1>
     <div><a href="/instagram/new">New Post</a></div>
@@ -16,10 +20,13 @@
                             <% } else { %> 
                                 <img src=" <%=post.media.thumbnail %>" alt="" class="img-fluid p-1"
                                     style="height:100%;object-fit:contain;">
-                            <% } %>
+                                    <% } %>
                         </a>
                     </div>
                 </div>
-            <% } %>
+                <% } %>
         </div>
     </div>
+
+    <div class="fb-login-button" data-width="" data-size="medium" data-button-type="login_with" data-layout="default"
+        data-auto-logout-link="true" data-use-continue-as="false"></div>
