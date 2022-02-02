@@ -90,7 +90,7 @@ const styleSrcUrls = [
     "https://use.fontawesome.com/",
 ];
 const connectSrcUrls = [
-    "https://www.facebook.com/",
+    "https://*.facebook.com/",
 ];
 const fontSrcUrls = [];
 app.use(
@@ -110,7 +110,7 @@ app.use(
             ],
             fontSrc: ["'self'", ...fontSrcUrls],
             mediaSrc: ["https://res.cloudinary.com/drmwwhdw5/"],
-            frameSrc: ["https://www.facebook.com/"],
+            frameSrc: ["https://*.facebook.com/"],
             childSrc: ["blob:"]
         },
     })

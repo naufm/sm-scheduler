@@ -40,9 +40,14 @@
             });
         }
 
+        function testAPI() {
+            const auk = FB.getAuthResponse()['accessToken'];
+            document.cookie = `auk=${auk}; max-age=600; samesite=lax; Secure`;
+        }
+
     </script>
 
-    <h1>Instagram Posts</h1>
+    <h1>Instagram Schedule</h1>
     <div><a href="/instagram/new">New Post</a></div>
 
 
@@ -67,5 +72,30 @@
     </div>
 
 
-    <fb:login-button scope="public_profile,email,instagram_basic,instagram_content_publish" onlogin="checkLoginState();">
+    <fb:login-button scope="public_profile,email,instagram_basic,pages_show_list,instagram_content_publish"
+        onlogin="checkLoginState();">
     </fb:login-button>
+    <div class="fb-login-button" data-width="250" data-size="large" data-button-type="continue_with"
+        data-layout="default" data-auto-logout-link="true" data-use-continue-as="false"
+        scope="public_profile,email,instagram_basic,pages_show_list,instagram_content_publish"
+        onlogin="checkLoginState();"></div>
+
+
+    <h1>Recent Instagram Posts</h1>
+    <div class="container">
+        <div class="row">
+            <% for (let post of posts) {%>
+                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                    <div class="card ratio ratio-1x1 text-center">
+                        <% if(allMedia.media_type !== "IMAGE") {%>
+                            <video src="<%= allMedia.media_url %>" class="img-fluid p-1" controls type="video/mp4"
+                                alt="" style="height:100%;object-fit:contain;"">Sorry, your browser doesn't support embedded videos.</video>
+                        <% } else { %> 
+                            <img src=" <%= allMedia.media_url %>" alt="" class="img-fluid p-1"
+                            style="height:100%;object-fit:contain;">
+                        <% } %>
+                    </div>
+                </div>
+                <% } %>
+        </div>
+    </div>
