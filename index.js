@@ -109,8 +109,9 @@ app.use(
                 "https://res.cloudinary.com/drmwwhdw5/",
             ],
             fontSrc: ["'self'", ...fontSrcUrls],
-            mediaSrc   : [ "https://res.cloudinary.com/drmwwhdw5/" ],
-            childSrc   : [ "blob:" ]
+            mediaSrc: ["https://res.cloudinary.com/drmwwhdw5/"],
+            frameSrc: ["https://www.facebook.com/"],
+            childSrc: ["blob:"]
         },
     })
 );
