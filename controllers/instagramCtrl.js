@@ -13,7 +13,7 @@ module.exports.index = async (req, res) => {
     const posts = await igPost.find({ author: req.user._id });
     let allMedia;
     const allCookies = req.cookies;
-    if (allCookies.status === "connected") {
+    if (allCookies.stat === "connected") {
         const shortAuk = await req.cookies.auk;
         const getAuk = await fetch(`https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=${process.env.FB_SECRET}&access_token=${shortAuk}`)
         const auk = await getAuk.json();
