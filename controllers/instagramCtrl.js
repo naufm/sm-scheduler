@@ -28,7 +28,7 @@ module.exports.index = async (req, res) => {
     //     const getMedia = await fetch(`https://graph.facebook.com/v12.0/${accID}/media?fields=id,caption,media_url&access_token=${auk}`);
     //     const allMedia = await getMedia.json().data;
     // }
-    res.render('instagram/index', { posts, allMedia });
+    res.render('instagram/index', { posts });
 }
 
 module.exports.newPostForm = (req, res) => {

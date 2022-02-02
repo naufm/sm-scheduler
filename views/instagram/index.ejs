@@ -82,20 +82,4 @@
 
 
     <h1>Recent Instagram Posts</h1>
-    <div class="container">
-        <div class="row">
-            <% for (let post of posts) {%>
-                <div class="col-12 col-md-6 col-lg-4 mb-3">
-                    <div class="card ratio ratio-1x1 text-center">
-                        <% if(allMedia.media_type !== "IMAGE") {%>
-                            <video src="<%= allMedia.media_url %>" class="img-fluid p-1" controls type="video/mp4"
-                                alt="" style="height:100%;object-fit:contain;"">Sorry, your browser doesn't support embedded videos.</video>
-                        <% } else { %> 
-                            <img src=" <%= allMedia.media_url %>" alt="" class="img-fluid p-1"
-                            style="height:100%;object-fit:contain;">
-                        <% } %>
-                    </div>
-                </div>
-                <% } %>
-        </div>
-    </div>
+    
