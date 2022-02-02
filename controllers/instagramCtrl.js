@@ -1,6 +1,5 @@
 const igPost = require('../models/instagram');
 const { cloudinary } = require('../cloudinary');
-const { fbLogin } = require('../utilities/fbLogin');
 
 const positiveOffset = (targetDate, zoneOffset) => {
     return new Date(targetDate.setHours(targetDate.getHours() - -zoneOffset)).toISOString();
@@ -10,7 +9,6 @@ const negativeOffset = (targetDate, zoneOffset) => {
 };
 
 module.exports.index = async (req, res) => {
-    fbLogin();
     const posts = await igPost.find({ author: req.user._id });
     res.render('instagram/index', { posts });
 }
