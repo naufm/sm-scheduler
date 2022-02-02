@@ -82,7 +82,6 @@ const scriptSrcUrls = [
     "https://cdnjs.cloudflare.com/",
     "https://cdn.jsdelivr.net",
     "https://connect.facebook.net",
-    "https://www.facebook.com/"
 ];
 const styleSrcUrls = [
     "https://kit-free.fontawesome.com/",
@@ -90,7 +89,9 @@ const styleSrcUrls = [
     "https://fonts.googleapis.com/",
     "https://use.fontawesome.com/",
 ];
-const connectSrcUrls = [];
+const connectSrcUrls = [
+    "https://www.facebook.com/",
+];
 const fontSrcUrls = [];
 app.use(
     helmet.contentSecurityPolicy({
