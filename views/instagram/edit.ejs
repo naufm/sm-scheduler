@@ -29,7 +29,7 @@
                 <div class="col-6 mb-3">
                     <label for="publishAt" class="form-label">Publish Time</label>
                     <input type="datetime-local" name="post[publishAt]" id="publishAt" class="form-control"
-                        value="<%= postTime %>" required>
+                        value="<%= post.publishAt.toISOString().slice(0, 16) %>" required>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-primary">Update Post</button>

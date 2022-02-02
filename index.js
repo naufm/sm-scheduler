@@ -27,6 +27,7 @@ const instagramRoutes = require('./routes/instagramRoutes')
 const tiktokRoutes = require('./routes/tiktokRoutes')
 
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/sm-scheduler';
+// const dbUrl = 'mongodb://localhost:27017/sm-scheduler';
 
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {

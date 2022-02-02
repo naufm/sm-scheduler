@@ -1,10 +1,10 @@
 const igPost = require('../models/instagram');
 const { cloudinary } = require('../cloudinary');
 
-const viewDate = (targetDate, zoneOffset) => {
-    return new Date(targetDate.setHours(targetDate.getHours() + zoneOffset)).toISOString().slice(0, 16);
+const positiveOffset = (targetDate, zoneOffset) => {
+    return new Date(targetDate.setHours(targetDate.getHours() - -zoneOffset)).toISOString();
 };
-const amendDate = (targetDate, zoneOffset) => {
+const negativeOffset = (targetDate, zoneOffset) => {
     return new Date(targetDate.setHours(targetDate.getHours() - zoneOffset)).toISOString();
 };
 
@@ -22,7 +22,7 @@ module.exports.createPost = async (req, res, next) => {
     newPost.media = req.file;
     newPost.author = req.user._id;
     const userZone = req.user.timezone;
-    newPost.publishAt = amendDate(newPost.publishAt, userZone);
+    newPost.publishAt = negativeOffset(newPost.publishAt, userZone);
     await newPost.save();
     req.flash('success', 'Your post has been scheduled.')
     res.redirect(`instagram/${newPost._id}`)
@@ -36,9 +36,9 @@ module.exports.showPost = async (req, res) => {
         return res.redirect('/instagram');
     }
     const userZone = req.user.timezone;
-    const postTime = viewDate(post.publishAt, userZone);
-    const updatedTime = viewDate(post.updatedAt, userZone);
-    res.render('instagram/show', { post, postTime, updatedTime });
+    positiveOffset(post.publishAt, userZone);
+    positiveOffset(post.updatedAt, userZone);
+    res.render('instagram/show', { post });
 }
 
 module.exports.editPostForm = async (req, res) => {
@@ -49,21 +49,19 @@ module.exports.editPostForm = async (req, res) => {
         return res.redirect('/instagram');
     };
     const userZone = req.user.timezone;
-    const postTime = viewDate(post.publishAt, userZone);
-    res.render('instagram/edit', { post, postTime });
+    positiveOffset(post.publishAt, userZone);
+    res.render('instagram/edit', { post });
 }
 
 module.exports.updatePost = async (req, res) => {
     const { id } = req.params;
-    const currentPost = await igPost.findById(id);
+    const userZone = req.user.timezone;
+    const newPublish = new Date(req.body.post.publishAt);
+    req.body.post.publishAt = new Date(newPublish.setHours(newPublish.getHours() - userZone));
     const post = await igPost.findByIdAndUpdate(id, { ...req.body.post }, { runValidators: true, new: true });
     if (req.file) {
         await cloudinary.uploader.destroy(post.media.filename);
         post.media = req.file;
-    };
-    const userZone = req.user.timezone;
-    if (currentPost.publishAt !== post.publishAt) {
-        post.publishAt = amendDate(post.publishAt, userZone);
     };
     await post.save();
     req.flash('success', 'Your post has been updated.')
