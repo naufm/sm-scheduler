@@ -90,11 +90,11 @@
             <% for (let i=0; i <= 5; i++) {%>
                 <div class="col-12 col-md-6 col-lg-4 mb-3">
                     <div class="card ratio ratio-1x1 text-center">
-                        <% if(allMedia[i].media_type !== "IMAGE") {%>
-                            <video src="<%= allMedia[i].media_url %>" class="img-fluid p-1" controls type="video/mp4"
+                        <% if(allMedia.data[i].media_type !== "IMAGE") {%>
+                            <video src="<%= allMedia.data[i].media_url %>" class="img-fluid p-1" controls type="video/mp4"
                                 alt="" style="height:100%;object-fit:contain;"">Sorry, your browser doesn't support embedded videos.</video>
                         <% } else { %> 
-                            <img src=" <%= allMedia[i].media_url %>" alt="" class="img-fluid p-1"
+                            <img src=" <%= allMedia.data[i].media_url %>" alt="" class="img-fluid p-1"
                             style="height:100%;object-fit:contain;">
                         <% } %>
                     </div>
