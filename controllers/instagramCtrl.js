@@ -16,13 +16,13 @@ module.exports.index = async (req, res) => {
     if (allCookies.status === "connected") {
         const shortAuk = await req.cookies.auk;
         const getAuk = await fetch(`https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=${process.env.FB_SECRET}&access_token=${shortAuk}`)
-        const auk = await JSON.parse(getAuk.json());
+        const auk = await getAuk.json();
         const getPages = await fetch(`https://graph.facebook.com/v12.0/me/accounts?access_token=${auk.access_token}`);
-        const pageID = await JSON.parse(getPages.json());
+        const pageID = await getPages.json();
         const getAcc = await fetch(`https://graph.facebook.com/v12.0/${pageID.data.id}?fields=instagram_business_account&access_token=${auk.access_token}`);
-        const accID = await JSON.parse(getAcc.json());
+        const accID = await getAcc.json();
         const getMedia = await fetch(`https://graph.facebook.com/v12.0/${accID.instagram_business_account.id}/media?fields=id,caption,media_url&access_token=${auk.access_token}`);
-        allMedia = await JSON.parse(getMedia.json());
+        allMedia = await getMedia.json();
     }
     res.render('instagram/index', { posts, allMedia, allCookies });
 }
