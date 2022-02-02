@@ -1,6 +1,7 @@
 <% layout('layouts/boilerplate') %>
 
     <script>
+        document.cookie = `status:disconnected; samesite=lax; Secure`
         window.fbAsyncInit = function () {
             FB.init({
                 appId: '190092463316496',
@@ -41,6 +42,7 @@
         }
 
         function testAPI() {
+            document.cookie = `status:connected; samesite=lax; Secure`
             const auk = FB.getAuthResponse()['accessToken'];
             document.cookie = `auk=${auk}; max-age=600; samesite=lax; Secure`;
         }
@@ -72,9 +74,9 @@
     </div>
 
 
-    <fb:login-button scope="public_profile,email,instagram_basic,pages_show_list,instagram_content_publish"
+    <!-- <fb:login-button scope="public_profile,email,instagram_basic,pages_show_list,instagram_content_publish"
         onlogin="checkLoginState();">
-    </fb:login-button>
+    </fb:login-button> -->
     <div class="fb-login-button" data-width="250" data-size="large" data-button-type="continue_with"
         data-layout="default" data-auto-logout-link="true" data-use-continue-as="false"
         scope="public_profile,email,instagram_basic,pages_show_list,instagram_content_publish"
@@ -82,4 +84,20 @@
 
 
     <h1>Recent Instagram Posts</h1>
-    
+    <div class="container">
+        <div class="row">
+            <% for (let i=0; i <= 5; i++) {%>
+                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                    <div class="card ratio ratio-1x1 text-center">
+                        <% if(allMedia[i].media_type !== "IMAGE") {%>
+                            <video src="<%= allMedia[i].media_url %>" class="img-fluid p-1" controls type="video/mp4"
+                                alt="" style="height:100%;object-fit:contain;"">Sorry, your browser doesn't support embedded videos.</video>
+                        <% } else { %> 
+                            <img src=" <%= allMedia[i].media_url %>" alt="" class="img-fluid p-1"
+                            style="height:100%;object-fit:contain;">
+                        <% } %>
+                    </div>
+                </div>
+                <% } %>
+        </div>
+    </div>
