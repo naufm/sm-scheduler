@@ -1,11 +1,6 @@
-const express = require('express');
-const app = express();
 const igPost = require('../models/instagram');
 const { cloudinary } = require('../cloudinary');
 const fetch = import('node-fetch');
-const cookieParser = require('cookie-parser');
-
-app.use(cookieParser())
 
 const positiveOffset = (targetDate, zoneOffset) => {
     return new Date(targetDate.setHours(targetDate.getHours() - -zoneOffset)).toISOString();
@@ -16,8 +11,10 @@ const negativeOffset = (targetDate, zoneOffset) => {
 
 module.exports.index = async (req, res) => {
     const posts = await igPost.find({ author: req.user._id });
+    let allMedia;
+    const allCookies = req.cookies;
     console.log(req.cookies);
-    if (req.cookies.status === "connected") {
+    if (allCookies.status === "connected") {
         const shortAuk = await req.cookies.auk;
         const getAuk = await fetch(`https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=${process.env.FB_SECRET}&access_token=${shortAuk}`)
         const auk = await getAuk.json().access_token;
@@ -26,9 +23,9 @@ module.exports.index = async (req, res) => {
         const getAcc = await fetch(`https://graph.facebook.com/v12.0/${pageID}?fields=instagram_business_account&access_token=${auk}`);
         const accID = await getAcc.json().instagram_business_account.id;
         const getMedia = await fetch(`https://graph.facebook.com/v12.0/${accID}/media?fields=id,caption,media_url&access_token=${auk}`);
-        const allMedia = await getMedia.json().data;
+        allMedia = await getMedia.json().data;
     }
-    res.render('instagram/index', { posts, allMedia });
+    res.render('instagram/index', { posts, allMedia, allCookies });
 }
 
 module.exports.newPostForm = (req, res) => {

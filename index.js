@@ -18,6 +18,7 @@ const User = require('./models/user')
 const { isLoggedIn } = require('./middleware');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
+const cookieParser = require('cookie-parser');
 
 const MongoDBStore = require('connect-mongo');
 
@@ -48,6 +49,7 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 app.use(mongoSanitize());
+app.use(cookieParser());
 
 const store = new MongoDBStore({
     mongoUrl: dbUrl,

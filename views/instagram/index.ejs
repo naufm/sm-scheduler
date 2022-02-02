@@ -1,7 +1,7 @@
 <% layout('layouts/boilerplate') %>
 
     <script>
-        document.cookie = `status:disconnected; samesite=lax; Secure`
+        document.cookie = `status=disconnected; samesite=lax; Secure`
         window.fbAsyncInit = function () {
             FB.init({
                 appId: '190092463316496',
@@ -42,7 +42,7 @@
         }
 
         function testAPI() {
-            document.cookie = `status:connected; samesite=lax; Secure`
+            document.cookie = `status=connected; samesite=lax; Secure`
             const auk = FB.getAuthResponse()['accessToken'];
             document.cookie = `auk=${auk}; max-age=600; samesite=lax; Secure`;
         }
@@ -84,6 +84,7 @@
 
 
     <h1>Recent Instagram Posts</h1>
+    <% if (allCookies.status === "connected") { %> 
     <div class="container">
         <div class="row">
             <% for (let i=0; i <= 5; i++) {%>
@@ -101,3 +102,4 @@
                 <% } %>
         </div>
     </div>
+    <% } %> 
