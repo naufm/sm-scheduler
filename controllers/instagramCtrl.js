@@ -23,6 +23,7 @@ module.exports.index = async (req, res) => {
         const accID = await getAcc.json();
         const getMedia = await fetch(`https://graph.facebook.com/v12.0/${accID.instagram_business_account.id}/media?fields=id,caption,media_url,media_type&access_token=${auk.access_token}`);
         allMedia = await getMedia.json();
+        console.log(allMedia);
     }
     res.render('instagram/index', { posts, allMedia, allCookies });
 }
