@@ -1,6 +1,6 @@
 const igPost = require('../models/instagram');
 const { cloudinary } = require('../cloudinary');
-const fetch = import('node-fetch');
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 const positiveOffset = (targetDate, zoneOffset) => {
     return new Date(targetDate.setHours(targetDate.getHours() - -zoneOffset)).toISOString();
