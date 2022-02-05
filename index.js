@@ -112,7 +112,7 @@ app.use(
                 "https://*.cdninstagram.com/"
             ],
             fontSrc: ["'self'", ...fontSrcUrls],
-            mediaSrc: ["https://res.cloudinary.com/drmwwhdw5/"],
+            mediaSrc: ["https://res.cloudinary.com/drmwwhdw5/", "https://*.cdninstagram.com/"],
             frameSrc: ["https://*.facebook.com/"],
             childSrc: ["blob:"]
         },
