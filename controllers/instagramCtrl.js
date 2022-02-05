@@ -15,7 +15,7 @@ module.exports.index = async (req, res) => {
     const allCookies = req.cookies;
     if (allCookies.stat === "connected") {
         const shortAuk = await req.cookies.auk;
-        const getAuk = await fetch(`https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=${process.env.FB_SECRET}&access_token=${shortAuk}`)
+        const getAuk = await fetch(`https://graph.facebook.com/v12.0/oauth/access_token?grant_type=fb_exchange_token&client_id=${process.env.APP_ID}&client_secret=${process.env.FB_SECRET}&fb_exchange_token=${shortAuk}`)
         const auk = await getAuk.json();
         console.log(auk);
         const getPages = await fetch(`https://graph.facebook.com/v12.0/me/accounts?access_token=${auk.access_token}`);

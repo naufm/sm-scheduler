@@ -4,7 +4,7 @@
         document.cookie = `stat=disconnected; samesite=lax; Secure`
         window.fbAsyncInit = function () {
             FB.init({
-                appId: '190092463316496',
+                appId: process.env.APP_ID,
                 cookie: true,
                 xfbml: true,
                 version: 'v12.0'
