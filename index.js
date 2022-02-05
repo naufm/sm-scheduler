@@ -109,6 +109,7 @@ app.use(
                 "blob:",
                 "data:",
                 "https://res.cloudinary.com/drmwwhdw5/",
+                "https://*.cdninstagram.com/"
             ],
             fontSrc: ["'self'", ...fontSrcUrls],
             mediaSrc: ["https://res.cloudinary.com/drmwwhdw5/"],
