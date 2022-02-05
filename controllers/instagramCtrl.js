@@ -21,7 +21,7 @@ module.exports.index = async (req, res) => {
         const getPages = await fetch(`https://graph.facebook.com/v12.0/me/accounts?access_token=${auk.access_token}`);
         const pageID = await getPages.json();
         console.log(pageID);
-        const getAcc = await fetch(`https://graph.facebook.com/v12.0/${pageID.data.id}?fields=instagram_business_account&access_token=${auk.access_token}`);
+        const getAcc = await fetch(`https://graph.facebook.com/v12.0/${pageID.data[0].id}?fields=instagram_business_account&access_token=${auk.access_token}`);
         const accID = await getAcc.json();
         console.log(accID);
         const getMedia = await fetch(`https://graph.facebook.com/v12.0/${accID.instagram_business_account.id}/media?fields=id,caption,media_url,media_type&access_token=${auk.access_token}`);
