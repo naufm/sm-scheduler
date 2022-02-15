@@ -14,18 +14,20 @@ const agenda = new Agenda({
 agenda.define('schedule instagram image post', async job => {
     const { data } = job.attrs;
     const user = await User.find(data.author);
+    const caption = data.caption.ReplaceAll('#', '%23');
     // const igContainer = `https://graph.facebook.com/${user.instaID}/media
     // ?image_url=${data.media.path}
     // &caption=${data.caption}`;
     // const containerID = await fetch(igContainer, { method: 'POST' });
     // const igPublish = `graph.facebook.com/${user.instaID}/media_publish?creation_id=${containerID}`;
     // await fetch(igPublish, { method: 'POST' });
-    console.log(data, user.instaID);
+    console.log(data, user.instaID, caption);
 });
 
 agenda.define('schedule instagram video post', async job => {
     const { data } = job.attrs;
     const user = await User.find(data.author);
+    const caption = data.caption.ReplaceAll('#', '%23');
     // const igContainer = `https://graph.facebook.com/${user.instaID}/media
     // ?media_type=VIDEO
     // &video_url=${data.media.path}
@@ -33,7 +35,7 @@ agenda.define('schedule instagram video post', async job => {
     // const containerID = await fetch(igContainer, { method: 'POST' });
     // const igPublish = `graph.facebook.com/${user.instaID}/media_publish?creation_id=${containerID}`;
     // await fetch(igPublish, { method: 'POST' });
-    console.log(data, user.instaID);
+    console.log(data, user.instaID, caption);
 });
 
 

@@ -32,6 +32,7 @@ module.exports.index = async (req, res) => {
         await User.findOneAndUpdate(req.user.id, { $set: { fbKey: auk.access_token, instaID: accID.instagram_business_account.id } }, { runValidators: true, new: true });
         const getMedia = await fetch(`${fbURL}${accID.instagram_business_account.id}/media?fields=id,caption,media_url,media_type&access_token=${auk.access_token}`);
         allMedia = await getMedia.json();
+        return res.redirect('instagram/index', { posts, allMedia, allCookies });
     }
     res.render('instagram/index', { posts, allMedia, allCookies });
 }
@@ -48,9 +49,9 @@ module.exports.createPost = async (req, res, next) => {
     newPost.publishAt = negativeOffset(newPost.publishAt, userZone);
     await newPost.save();
     if(newPost.media.path.slice(-3) === 'mp4') {
-        await agenda.schedule(newPost.publishAt, 'schedule instagram video post', {postID: newPost._id, mediaPath: newPost.media.path, userID: author });
+        await agenda.schedule(newPost.publishAt, 'schedule instagram video post', {postID: newPost._id, mediaPath: newPost.media.path, userID: req.user.author });
     } else {
-        await agenda.schedule(newPost.publishAt, 'schedule instagram image post', {postID: newPost._id, mediaPath: newPost.media.path, userID: author });
+        await agenda.schedule(newPost.publishAt, 'schedule instagram image post', {postID: newPost._id, mediaPath: newPost.media.path, userID: req.user.author });
     }
     req.flash('success', 'Your post has been scheduled.');
     res.redirect(`instagram/${newPost._id}`);
@@ -94,9 +95,9 @@ module.exports.updatePost = async (req, res) => {
     await post.save();
     await agenda.cancel({data: {postID: id}});
     if(post.media.path.slice(-3) === 'mp4') {
-        await agenda.schedule(post.publishAt, 'schedule instagram video post', {postID: post._id, mediaPath: post.media.path, userID: author });
+        await agenda.schedule(post.publishAt, 'schedule instagram video post', {postID: post._id, mediaPath: post.media.path, userID: req.user.author });
     } else {
-        await agenda.schedule(post.publishAt, 'schedule instagram image post', {postID: post._id, mediaPath: post.media.path, userID: author });
+        await agenda.schedule(post.publishAt, 'schedule instagram image post', {postID: post._id, mediaPath: post.media.path, userID: req.user.author });
     }
     req.flash('success', 'Your post has been updated.');
     res.redirect(`/instagram/${post._id}`);
