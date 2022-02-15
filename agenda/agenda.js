@@ -13,7 +13,7 @@ const agenda = new Agenda({
 
 agenda.define('schedule instagram image post', async job => {
     const { data } = job.attrs;
-    const user = await User.find({ _id: data.userID });
+    const user = await db.users.find({ _id: data.userID });
     const caption = data.caption.replaceAll('#', '%23');
     // const igContainer = `https://graph.facebook.com/${user.instaID}/media
     // ?image_url=${data.media.path}
@@ -21,12 +21,12 @@ agenda.define('schedule instagram image post', async job => {
     // const containerID = await fetch(igContainer, { method: 'POST' });
     // const igPublish = `graph.facebook.com/${user.instaID}/media_publish?creation_id=${containerID}`;
     // await fetch(igPublish, { method: 'POST' });
-    console.log(data, user.instaID, caption);
+    console.log(data, user, user.instaID, caption);
 });
 
 agenda.define('schedule instagram video post', async job => {
     const { data } = job.attrs;
-    const user = await User.find({ _id: data.userID });
+    const user = await db.users.find({ _id: data.userID });
     const caption = data.caption.replaceAll('#', '%23');
     // const igContainer = `https://graph.facebook.com/${user.instaID}/media
     // ?media_type=VIDEO
@@ -35,7 +35,7 @@ agenda.define('schedule instagram video post', async job => {
     // const containerID = await fetch(igContainer, { method: 'POST' });
     // const igPublish = `graph.facebook.com/${user.instaID}/media_publish?creation_id=${containerID}`;
     // await fetch(igPublish, { method: 'POST' });
-    console.log(data, user.instaID, caption);
+    console.log(data, user, user.instaID, caption);
 });
 
 

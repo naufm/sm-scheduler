@@ -92,7 +92,7 @@ module.exports.updatePost = async (req, res) => {
         post.media = req.file;
     };
     await post.save();
-    await agenda.cancel({data: {postID: id}});
+    await agenda.cancel({data: {postID: post._id}});
     if(post.media.path.slice(-3) === 'mp4') {
         await agenda.schedule(post.publishAt, 'schedule instagram video post', {postID: post._id, mediaPath: post.media.path, userID: req.user._id, caption: post.caption });
     } else {
@@ -105,7 +105,7 @@ module.exports.updatePost = async (req, res) => {
 module.exports.deletePost = async (req, res) => {
     const { id } = req.params;
     const post = await igPost.findById(id);
-    await agenda.cancel({data: {postID: id}});
+    await agenda.cancel({data: {postID: post._id}});
     await cloudinary.uploader.destroy(post.media.filename);
     await igPost.findByIdAndDelete(id);
     req.flash('success', 'Your post has been deleted.');
