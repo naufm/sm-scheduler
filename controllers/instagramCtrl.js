@@ -48,9 +48,9 @@ module.exports.createPost = async (req, res, next) => {
     newPost.publishAt = negativeOffset(newPost.publishAt, userZone);
     await newPost.save();
     if(newPost.media.path.slice(-3) === 'mp4') {
-        await agenda.schedule(newPost.publishAt, 'schedule instagram video post', {postID: newPost._id, mediaPath: newPost.media.path, userID: req.user.author });
+        await agenda.schedule(newPost.publishAt, 'schedule instagram video post', {postID: newPost._id, mediaPath: newPost.media.path, userID: req.user.author, caption: newPost.caption });
     } else {
-        await agenda.schedule(newPost.publishAt, 'schedule instagram image post', {postID: newPost._id, mediaPath: newPost.media.path, userID: req.user.author });
+        await agenda.schedule(newPost.publishAt, 'schedule instagram image post', {postID: newPost._id, mediaPath: newPost.media.path, userID: req.user.author, caption: newPost.caption });
     }
     req.flash('success', 'Your post has been scheduled.');
     res.redirect(`instagram/${newPost._id}`);
@@ -94,9 +94,9 @@ module.exports.updatePost = async (req, res) => {
     await post.save();
     await agenda.cancel({data: {postID: id}});
     if(post.media.path.slice(-3) === 'mp4') {
-        await agenda.schedule(post.publishAt, 'schedule instagram video post', {postID: post._id, mediaPath: post.media.path, userID: req.user.author });
+        await agenda.schedule(post.publishAt, 'schedule instagram video post', {postID: post._id, mediaPath: post.media.path, userID: req.user.author, caption: post.caption });
     } else {
-        await agenda.schedule(post.publishAt, 'schedule instagram image post', {postID: post._id, mediaPath: post.media.path, userID: req.user.author });
+        await agenda.schedule(post.publishAt, 'schedule instagram image post', {postID: post._id, mediaPath: post.media.path, userID: req.user.author, caption: post.caption });
     }
     req.flash('success', 'Your post has been updated.');
     res.redirect(`/instagram/${post._id}`);
