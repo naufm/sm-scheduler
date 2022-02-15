@@ -107,11 +107,13 @@ module.exports.deletePost = async (req, res) => {
     // console.log(post._id);
     // const count = await agenda.cancel({data: {postID: post._id}});
     // console.log(count);
-    const jobs = await agenda.jobs({data: {postID: post._id}})
+    const jobs = await agenda.jobs({name: 'schedule instagram image post'})
     console.log(jobs);
-    for (job of jobs) {
-        job.remove();
-    };
+    const jobs2 = await agenda.jobs({data: {}})
+    console.log(jobs2);
+    // for (let job of jobs) {
+    //     job.remove();
+    // };
     await cloudinary.uploader.destroy(post.media.filename);
     await igPost.findByIdAndDelete(id);
     req.flash('success', 'Your post has been deleted.');
