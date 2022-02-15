@@ -21,7 +21,7 @@ agenda.define('schedule instagram image post', async job => {
     // const containerID = await fetch(igContainer, { method: 'POST' });
     // const igPublish = `graph.facebook.com/${user.instaID}/media_publish?creation_id=${containerID}`;
     // await fetch(igPublish, { method: 'POST' });
-    console.log(data, user, user.instaID, caption);
+    console.log(data, user, user[0].instaID, caption);
 });
 
 agenda.define('schedule instagram video post', async job => {
@@ -35,7 +35,7 @@ agenda.define('schedule instagram video post', async job => {
     // const containerID = await fetch(igContainer, { method: 'POST' });
     // const igPublish = `graph.facebook.com/${user.instaID}/media_publish?creation_id=${containerID}`;
     // await fetch(igPublish, { method: 'POST' });
-    console.log(data, user, user.instaID, caption);
+    console.log(data, user, user[0].instaID, caption);
 });
 
 

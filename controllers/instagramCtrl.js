@@ -104,9 +104,14 @@ module.exports.updatePost = async (req, res) => {
 module.exports.deletePost = async (req, res) => {
     const { id } = req.params;
     const post = await igPost.findById(id);
-    console.log(post._id);
-    const count = await agenda.cancel({data: {postID: post._id}});
-    console.log(count);
+    // console.log(post._id);
+    // const count = await agenda.cancel({data: {postID: post._id}});
+    // console.log(count);
+    const jobs = await agenda.jobs({date: {postID: post._id}})
+    console.log(jobs);
+    for (job of jobs) {
+        job.remove();
+    };
     await cloudinary.uploader.destroy(post.media.filename);
     await igPost.findByIdAndDelete(id);
     req.flash('success', 'Your post has been deleted.');
