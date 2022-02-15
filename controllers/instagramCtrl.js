@@ -29,7 +29,7 @@ module.exports.index = async (req, res) => {
         const pageID = await getPages.json();
         const getAcc = await fetch(`${fbURL}${pageID.data[0].id}?fields=instagram_business_account&access_token=${auk.access_token}`);
         const accID = await getAcc.json();
-        await findOneAndUpdate(req.user.id, { $set: { fbKey: auk.access_token, instaID: accID.instagram_business_account.id } }, { runValidators: true, new: true });
+        await User.findOneAndUpdate(req.user.id, { $set: { fbKey: auk.access_token, instaID: accID.instagram_business_account.id } }, { runValidators: true, new: true });
         const getMedia = await fetch(`${fbURL}${accID.instagram_business_account.id}/media?fields=id,caption,media_url,media_type&access_token=${auk.access_token}`);
         allMedia = await getMedia.json();
     }
