@@ -107,7 +107,7 @@ module.exports.deletePost = async (req, res) => {
     // console.log(post._id);
     // const count = await agenda.cancel({data: {postID: post._id}});
     // console.log(count);
-    const jobs = await agenda.jobs({date: {postID: post._id}})
+    const jobs = await agenda.jobs({data: {postID: post._id}})
     console.log(jobs);
     for (job of jobs) {
         job.remove();
