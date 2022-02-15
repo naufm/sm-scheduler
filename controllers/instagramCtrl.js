@@ -104,8 +104,8 @@ module.exports.updatePost = async (req, res) => {
 module.exports.deletePost = async (req, res) => {
     const { id } = req.params;
     const post = await igPost.findById(id);
-    const jobs = await agenda.jobs({ data: [] })
-    console.log('data array ' + jobs);
+    const jobs = await agenda.jobs({ data: {} })
+    console.log(jobs);
     // const count = await agenda.cancel({ attrs: { data: { postID: post._id }}});
     // console.log(count);
     
