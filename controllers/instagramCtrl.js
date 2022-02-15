@@ -32,7 +32,6 @@ module.exports.index = async (req, res) => {
         await User.findOneAndUpdate(req.user.id, { $set: { fbKey: auk.access_token, instaID: accID.instagram_business_account.id } }, { runValidators: true, new: true });
         const getMedia = await fetch(`${fbURL}${accID.instagram_business_account.id}/media?fields=id,caption,media_url,media_type&access_token=${auk.access_token}`);
         allMedia = await getMedia.json();
-        return res.redirect('instagram/index', { posts, allMedia, allCookies });
     }
     res.render('instagram/index', { posts, allMedia, allCookies });
 }
