@@ -1,6 +1,8 @@
 const igPost = require('../models/instagram');
+const User = require('../models/user');
 const { cloudinary } = require('../cloudinary');
 const fetch = require('node-fetch');
+const { findOneAndUpdate } = require('../models/user');
 
 const positiveOffset = (targetDate, zoneOffset) => {
     return new Date(targetDate.setHours(targetDate.getHours() - -zoneOffset)).toISOString();
@@ -11,22 +13,24 @@ const negativeOffset = (targetDate, zoneOffset) => {
 
 module.exports.index = async (req, res) => {
     const posts = await igPost.find({ author: req.user._id });
+    const fbURL = 'https://graph.facebook.com/v12.0/'
     let allMedia;
     const allCookies = req.cookies;
-    if (allCookies.stat === "connected") {
-        const shortAuk = await req.cookies.auk;
-        const getAuk = await fetch(`https://graph.facebook.com/v12.0/oauth/access_token?grant_type=fb_exchange_token&client_id=${process.env.FB_APP_ID}&client_secret=${process.env.FB_SECRET}&fb_exchange_token=${shortAuk}`)
-        const auk = await getAuk.json();
-        console.log(auk);
-        const getPages = await fetch(`https://graph.facebook.com/v12.0/me/accounts?access_token=${auk.access_token}`);
-        const pageID = await getPages.json();
-        console.log(pageID);
-        const getAcc = await fetch(`https://graph.facebook.com/v12.0/${pageID.data[0].id}?fields=instagram_business_account&access_token=${auk.access_token}`);
-        const accID = await getAcc.json();
-        console.log(accID);
-        const getMedia = await fetch(`https://graph.facebook.com/v12.0/${accID.instagram_business_account.id}/media?fields=id,caption,media_url,media_type&access_token=${auk.access_token}`);
+    const user = await User.findById(req.user._id);
+    if (allCookies.stat === "connected" && user.fbKey && user.instaID) {
+        const getMedia = await fetch(`${fbURL}${user.instaID}/media?fields=id,caption,media_url,media_type&access_token=${user.fbKey}`);
         allMedia = await getMedia.json();
-        console.log(allMedia);
+    } else if (allCookies.stat === "connected" && !user.fbKey) {
+        const shortAuk = await req.cookies.auk;
+        const getAuk = await fetch(`${fbURL}oauth/access_token?grant_type=fb_exchange_token&client_id=${process.env.FB_APP_ID}&client_secret=${process.env.FB_SECRET}&fb_exchange_token=${shortAuk}`)
+        const auk = await getAuk.json();
+        const getPages = await fetch(`${fbURL}me/accounts?access_token=${auk.access_token}`);
+        const pageID = await getPages.json();
+        const getAcc = await fetch(`${fbURL}${pageID.data[0].id}?fields=instagram_business_account&access_token=${auk.access_token}`);
+        const accID = await getAcc.json();
+        await findOneAndUpdate(req.user.id, { $set: { fbKey: auk.access_token, instaID: accID.instagram_business_account.id } }, { runValidators: true, new: true });
+        const getMedia = await fetch(`${fbURL}${accID.instagram_business_account.id}/media?fields=id,caption,media_url,media_type&access_token=${auk.access_token}`);
+        allMedia = await getMedia.json();
     }
     res.render('instagram/index', { posts, allMedia, allCookies });
 }

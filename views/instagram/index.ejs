@@ -45,6 +45,7 @@
             document.cookie = `stat=connected; samesite=lax; Secure`
             const auk = FB.getAuthResponse()['accessToken'];
             document.cookie = `auk=${auk}; max-age=600; samesite=lax; Secure`;
+            window.location.reload(true);
         }
 
     </script>
@@ -74,9 +75,6 @@
     </div>
 
 
-    <!-- <fb:login-button scope="public_profile,email,instagram_basic,pages_show_list,instagram_content_publish"
-        onlogin="checkLoginState();">
-    </fb:login-button> -->
     <div class="fb-login-button" data-width="250" data-size="large" data-button-type="continue_with"
         data-layout="default" data-auto-logout-link="true" data-use-continue-as="false"
         scope="public_profile,email,instagram_basic,pages_show_list,instagram_content_publish"
