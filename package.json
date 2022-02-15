@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/naufm/sm-scheduler#readme",
   "dependencies": {
+    "agenda": "^4.2.1",
     "cloudinary": "^1.28.1",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^4.6.0",

@@ -3,6 +3,7 @@ const User = require('../models/user');
 const { cloudinary } = require('../cloudinary');
 const fetch = require('node-fetch');
 const { findOneAndUpdate } = require('../models/user');
+const agenda = require('../agenda/agenda')
 
 const positiveOffset = (targetDate, zoneOffset) => {
     return new Date(targetDate.setHours(targetDate.getHours() - -zoneOffset)).toISOString();
@@ -46,8 +47,13 @@ module.exports.createPost = async (req, res, next) => {
     const userZone = req.user.timezone;
     newPost.publishAt = negativeOffset(newPost.publishAt, userZone);
     await newPost.save();
-    req.flash('success', 'Your post has been scheduled.')
-    res.redirect(`instagram/${newPost._id}`)
+    if(newPost.media.path.slice(-3) === 'mp4') {
+        await agenda.schedule(newPost.publishAt, 'schedule instagram video post', {postID: newPost._id, mediaPath: newPost.media.path, userID: author });
+    } else {
+        await agenda.schedule(newPost.publishAt, 'schedule instagram image post', {postID: newPost._id, mediaPath: newPost.media.path, userID: author });
+    }
+    req.flash('success', 'Your post has been scheduled.');
+    res.redirect(`instagram/${newPost._id}`);
 }
 
 module.exports.showPost = async (req, res) => {
@@ -86,15 +92,22 @@ module.exports.updatePost = async (req, res) => {
         post.media = req.file;
     };
     await post.save();
-    req.flash('success', 'Your post has been updated.')
+    await agenda.cancel({data: {postID: id}});
+    if(post.media.path.slice(-3) === 'mp4') {
+        await agenda.schedule(post.publishAt, 'schedule instagram video post', {postID: post._id, mediaPath: post.media.path, userID: author });
+    } else {
+        await agenda.schedule(post.publishAt, 'schedule instagram image post', {postID: post._id, mediaPath: post.media.path, userID: author });
+    }
+    req.flash('success', 'Your post has been updated.');
     res.redirect(`/instagram/${post._id}`);
 }
 
 module.exports.deletePost = async (req, res) => {
     const { id } = req.params;
-    const post = await igPost.findById(id)
+    const post = await igPost.findById(id);
+    await agenda.cancel({data: {postID: id}});
     await cloudinary.uploader.destroy(post.media.filename);
     await igPost.findByIdAndDelete(id);
-    req.flash('success', 'Your post has been deleted.')
+    req.flash('success', 'Your post has been deleted.');
     res.redirect(`/instagram`);
 }
