@@ -8,7 +8,10 @@ const UserSchema = new Schema({
         required: true,
         unique: true
     },
-    timezone: Number
+    timezone: Number,
+    fbKey: String,
+    fbKeyLife: Number,
+    instaID: String
 });
 
 UserSchema.plugin(passportLocalMongoose);
