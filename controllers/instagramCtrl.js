@@ -2,7 +2,6 @@ const igPost = require('../models/instagram');
 const User = require('../models/user');
 const { cloudinary } = require('../cloudinary');
 const fetch = require('node-fetch');
-const { findOneAndUpdate } = require('../models/user');
 const agenda = require('../agenda/agenda')
 
 const positiveOffset = (targetDate, zoneOffset) => {
@@ -105,7 +104,9 @@ module.exports.updatePost = async (req, res) => {
 module.exports.deletePost = async (req, res) => {
     const { id } = req.params;
     const post = await igPost.findById(id);
-    await agenda.cancel({data: {postID: post._id}});
+    console.log(post._id);
+    const count = await agenda.cancel({data: {postID: post._id}});
+    console.log(count);
     await cloudinary.uploader.destroy(post.media.filename);
     await igPost.findByIdAndDelete(id);
     req.flash('success', 'Your post has been deleted.');
