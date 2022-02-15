@@ -108,7 +108,7 @@ module.exports.deletePost = async (req, res) => {
     // console.log(jobs);
     // const jobs2 = await agenda.jobs({name: 'schedule instagram image post'})
     // console.log(jobs2);
-    const count = await agenda.cancel({ data: [{ postID: post._id }]});
+    const count = await agenda.cancel({ name: 'schedule instagram image post' });
     console.log(count);
     
     // const jobs2 = await agenda.jobs({data: {}})
