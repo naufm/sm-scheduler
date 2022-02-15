@@ -104,11 +104,13 @@ module.exports.updatePost = async (req, res) => {
 module.exports.deletePost = async (req, res) => {
     const { id } = req.params;
     const post = await igPost.findById(id);
-    // console.log(post._id);
-    // const count = await agenda.cancel({data: {postID: post._id}});
+    const jobs = await agenda.jobs({attrs: {data: {} }})
+    console.log('data array ' + jobs.toArray());
+    const jobs2 = await agenda.jobs({data: [{postID: post._id}] })
+    console.log('data array ' + jobs2.toArray());
+    // const count = await agenda.cancel({ attrs: { data: { postID: post._id }}});
     // console.log(count);
-    const jobs = await agenda.jobs({attrs: {data: {postID: post._id}}})
-    console.log(jobs);
+    
     // const jobs2 = await agenda.jobs({data: {}})
     // console.log(jobs2);
     // for (let job of jobs) {
