@@ -15,27 +15,27 @@ agenda.define('schedule instagram image post', async job => {
     const { data } = job.attrs;
     const user = await User.find({ _id: data.userID });
     const caption = data.caption.replaceAll('#', '%23');
-    // const igContainer = `https://graph.facebook.com/${user.instaID}/media
-    // ?image_url=${data.media.path}
-    // &caption=${data.caption}`;
-    // const containerID = await fetch(igContainer, { method: 'POST' });
-    // const igPublish = `graph.facebook.com/${user.instaID}/media_publish?creation_id=${containerID}`;
-    // await fetch(igPublish, { method: 'POST' });
-    console.log(data, user, user[0].instaID, caption);
+    const igContainer = `https://graph.facebook.com/${user[0].instaID}/media
+    ?image_url=${data.media.path}
+    &caption=${caption}`;
+    const containerID = await fetch(igContainer, { method: 'POST' });
+    const igPublish = `graph.facebook.com/${user[0].instaID}/media_publish?creation_id=${containerID}`;
+    await fetch(igPublish, { method: 'POST' });
+    // console.log(data, user, user[0].instaID, caption);
 });
 
 agenda.define('schedule instagram video post', async job => {
     const { data } = job.attrs;
     const user = await User.find({ _id: data.userID });
     const caption = data.caption.replaceAll('#', '%23');
-    // const igContainer = `https://graph.facebook.com/${user.instaID}/media
-    // ?media_type=VIDEO
-    // &video_url=${data.media.path}
-    // &caption=${data.caption}`;
-    // const containerID = await fetch(igContainer, { method: 'POST' });
-    // const igPublish = `graph.facebook.com/${user.instaID}/media_publish?creation_id=${containerID}`;
-    // await fetch(igPublish, { method: 'POST' });
-    console.log(data, user, user[0].instaID, caption);
+    const igContainer = `https://graph.facebook.com/${user[0].instaID}/media
+    ?media_type=VIDEO
+    &video_url=${data.media.path}
+    &caption=${caption}`;
+    const containerID = await fetch(igContainer, { method: 'POST' });
+    const igPublish = `graph.facebook.com/${user[0].instaID}/media_publish?creation_id=${containerID}`;
+    await fetch(igPublish, { method: 'POST' });
+    // console.log(data, user, user[0].instaID, caption);
 });
 
 
