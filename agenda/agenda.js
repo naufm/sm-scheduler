@@ -16,6 +16,7 @@ agenda.define('schedule instagram image post', async job => {
     const user = await User.find({ _id: data.userID });
     const caption = data.caption.replaceAll('#', '%23');
     const igContainer = `https://graph.facebook.com/${user[0].instaID}/media?image_url=${data.mediaPath}&caption=${caption}`;
+    console.log(igContainer);
     const containerID = await fetch(igContainer, { method: 'POST' });
     const igPublish = `graph.facebook.com/${user[0].instaID}/media_publish?creation_id=${containerID}`;
     await fetch(igPublish, { method: 'POST' });
