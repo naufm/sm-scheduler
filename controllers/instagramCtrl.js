@@ -65,7 +65,7 @@ module.exports.showPost = async (req, res) => {
     const userZone = req.user.timezone;
     positiveOffset(post.publishAt, userZone);
     positiveOffset(post.updatedAt, userZone);
-    res.render('instagram/show', { post });
+    res.render('instagram/show', { post, userZone});
 }
 
 module.exports.editPostForm = async (req, res) => {

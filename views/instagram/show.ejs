@@ -15,7 +15,7 @@
             </div>
             <ul class="list-group list-group-flush">
               <li class="list-group-item text-muted">
-                <% if (post.publishAt.getTime() > Date.now() ) {%>
+                <% if (post.publishAt.getTime() - (userZone*60*60*1000) > Date.now() ) {%>
                     Publish Status: Pending...
                 <% } else { %>
                     Publish Status: Published!
