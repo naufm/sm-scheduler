@@ -14,12 +14,13 @@ const agenda = new Agenda({
 agenda.define('schedule instagram image post', async job => {
     const { data } = job.attrs;
     const user = await User.find({ _id: data.userID });
-    let igContainer = `https://graph.facebook.com/${user[0].instaID}/media?image_url=${data.mediaPath}&caption=${data.caption}`;
-    igContainer = encodeURIComponent(igContainer);
-    console.log(igContainer);
-    const containerID = await fetch(igContainer, { method: 'POST' });
-    console.log(containerID);
-    const igPublish = `https://graph.facebook.com/${user[0].instaID}/media_publish?creation_id=${containerID}`;
+    let igContainerUrl = `https://graph.facebook.com/${user[0].instaID}/media?image_url=${data.mediaPath}&caption=${data.caption}`;
+    igContainerUrl = encodeURIComponent(igContainerUrl);
+    console.log(igContainerUrl);
+    const getContainerID = await fetch(igContainerUrl, { method: 'POST' });
+    const container = await getContainerID.json()
+    console.log(container);
+    const igPublish = `https://graph.facebook.com/${user[0].instaID}/media_publish?creation_id=${container.id}`;
     await fetch(igPublish, { method: 'POST' });
     // console.log(data, user, user[0].instaID, caption);
 });
@@ -27,12 +28,13 @@ agenda.define('schedule instagram image post', async job => {
 agenda.define('schedule instagram video post', async job => {
     const { data } = job.attrs;
     const user = await User.find({ _id: data.userID });
-    let igContainer = `https://graph.facebook.com/${user[0].instaID}/media?media_type=VIDEO&video_url=${data.mediaPath}&caption=${data.caption}`;
-    igContainer = encodeURIComponent(igContainer);
-    console.log(igContainer);
-    const containerID = await fetch(igContainer, { method: 'POST' });
-    console.log(containerID);
-    const igPublish = `https://graph.facebook.com/${user[0].instaID}/media_publish?creation_id=${containerID}`;
+    let igContainerUrl = `https://graph.facebook.com/${user[0].instaID}/media?media_type=VIDEO&video_url=${data.mediaPath}&caption=${data.caption}`;
+    igContainerUrl = encodeURIComponent(igContainerUrl);
+    console.log(igContainerUrl);
+    const getContainerID = await fetch(igContainerUrl, { method: 'POST' });
+    const container = await getContainerID.json()
+    console.log(container);
+    const igPublish = `https://graph.facebook.com/${user[0].instaID}/media_publish?creation_id=${container.id}`;
     await fetch(igPublish, { method: 'POST' });
     // console.log(data, user, user[0].instaID, caption);
 });
