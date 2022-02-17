@@ -14,7 +14,7 @@ const agenda = new Agenda({
 agenda.define('schedule instagram image post', async job => {
     const { data } = job.attrs;
     const user = await User.find({ _id: data.userID });
-    let igContainer = `https://graph.facebook.com/${user[0].instaID}/media?image_url=${data.mediaPath}&caption=${caption}`;
+    let igContainer = `https://graph.facebook.com/${user[0].instaID}/media?image_url=${data.mediaPath}&caption=${data.caption}`;
     igContainer = encodeURIComponent(igContainer);
     console.log(igContainer);
     const containerID = await fetch(igContainer, { method: 'POST' });
@@ -27,7 +27,7 @@ agenda.define('schedule instagram image post', async job => {
 agenda.define('schedule instagram video post', async job => {
     const { data } = job.attrs;
     const user = await User.find({ _id: data.userID });
-    let igContainer = `https://graph.facebook.com/${user[0].instaID}/media?media_type=VIDEO&video_url=${data.mediaPath}&caption=${caption}`;
+    let igContainer = `https://graph.facebook.com/${user[0].instaID}/media?media_type=VIDEO&video_url=${data.mediaPath}&caption=${data.caption}`;
     igContainer = encodeURIComponent(igContainer);
     console.log(igContainer);
     const containerID = await fetch(igContainer, { method: 'POST' });
