@@ -21,10 +21,11 @@ agenda.define('schedule instagram image post', async job => {
     try {
         const getContainerID = await fetch(igContainerUrl, { method: 'POST' });
         const container = await getContainerID.json()
+        console.log(container);
     } catch (error) {
         console.log(error);
     }
-    console.log(container);
+    
     const igPublish = `https://graph.facebook.com/${user[0].instaID}/media_publish?creation_id=${container.id}&access_token=${user[0].fbKey}`;
     await fetch(igPublish, { method: 'POST' });
     // console.log(data, user, user[0].instaID, caption);
